@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Email Validation Django</title>
+
+        <!-- Compiled and minified CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+
+        <!-- Compiled and minified JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+
+    </head>
+    <body>
+        <div class="container">
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'success'%}
+                        <span class="btn green lighten-2">{{message}}</span>
+                    {% else %}
+                        <span class="btn red lighten-2">{{message}}</span>
+                    {% endif %}
+
+                {% endfor %}
+
+            {% endif %}
+            <h3>Add an E-mail</h3>
+            <form action="/add" method="post">
+                {% csrf_token %}
+                <label for="email">Email: </label>
+                <input type="text" name="email">
+                <input class="btn" type="submit" value="Add">
+            </form>
+
+            {% if emails %}
+                <h4>Email Addresses in the DB</h4>
+
+                <div class="card-panel blue lighten-5">
+                    {% for email in emails %}
+                        <div class="row">
+                            <div class="col s3">{{email.email}}</div>
+                            <div class="col s3">{{email.created_at}}</div>
+                            <div class="col s3"><a href="/destroy/{{email.id}}" class='btn red lightness-3'>Remove</a></div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <h5 class="red lighten-3">Please add some emails!</h5>
+            {% endif %}
+
+        </div>
+
+    </body>
+</html>
